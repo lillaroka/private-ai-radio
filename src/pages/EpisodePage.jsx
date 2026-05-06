@@ -274,9 +274,9 @@ export default function EpisodePage() {
 
         {error ? <p className="error">{error}</p> : null}
 
-        {loading && progress ? (
+        {loading ? (
           <div className="progress-bar">
-            <div className="progress-text">{progressText(progress.stage, progress.detail)}</div>
+            <div className="progress-text">{progress ? progressText(progress.stage, progress.detail) : "启动中..."}</div>
           </div>
         ) : null}
 

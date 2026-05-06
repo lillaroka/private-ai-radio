@@ -113,7 +113,7 @@ app.post("/api/episodes", async (request, response) => {
   response.flushHeaders();
 
   let clientConnected = true;
-  request.on("close", () => { clientConnected = false; });
+  response.on("close", () => { console.log("[sse] client disconnected"); clientConnected = false; });
 
   function sendEvent(data) {
     if (clientConnected) {
@@ -195,7 +195,7 @@ app.post("/api/episodes/script", async (request, response) => {
   response.flushHeaders();
 
   let clientConnected = true;
-  request.on("close", () => { clientConnected = false; });
+  response.on("close", () => { console.log("[sse] client disconnected"); clientConnected = false; });
 
   function sendEvent(data) {
     if (clientConnected) {
@@ -263,7 +263,7 @@ app.post("/api/episodes/:id/audio", async (request, response) => {
   response.flushHeaders();
 
   let clientConnected = true;
-  request.on("close", () => { clientConnected = false; });
+  response.on("close", () => { console.log("[sse] client disconnected"); clientConnected = false; });
 
   function sendEvent(data) {
     if (clientConnected) {
@@ -418,7 +418,7 @@ app.get(/.*/, (_request, response) => {
 });
 
 const server = app.listen(port, "127.0.0.1", async () => {
-  console.log(`Radio Craft is running at http://127.0.0.1:${port}`);
+  console.log(`Private AI Radio is running at http://127.0.0.1:${port}`);
 
   // Check ffmpeg availability
   try {

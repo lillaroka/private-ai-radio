@@ -1,10 +1,10 @@
-# Radio Craft
+# Private AI Radio
 
 [中文文档](README.md)
 
 AI-powered personal podcast generator. Turn your reading notes, URLs, and ideas into a two-host radio show with background music.
 
-Give it a topic or paste an article, and Radio Craft will:
+Give it a topic or paste an article, and Private AI Radio will:
 
 1. **Research** — search the web for supplementary material (optional)
 2. **Write** — generate a 7-10 minute two-host dialogue script
@@ -78,7 +78,7 @@ radio-craft/
 
 ## Voice Customization
 
-Radio Craft ships with 4 built-in voice options:
+Private AI Radio ships with 4 built-in voice options:
 
 - **Demo 1** / **Demo 2** — Included sample voice references
 - **Anna** / **Diana** — Public preset voices from SiliconFlow
@@ -111,7 +111,7 @@ MOSS_REFERENCE_S2_TEXT=Reference transcript...
 
 ## Memory System
 
-What makes Radio Craft generate episodes that feel like *yours* is the `memory/` directory. These files tell the AI who you are, what you care about, and what kind of conversation you want to hear. The AI reads them before generating every script.
+What makes Private AI Radio generate episodes that feel like *yours* is the `memory/` directory. These files tell the AI who you are, what you care about, and what kind of conversation you want to hear. The AI reads them before generating every script.
 
 | File | Purpose |
 |------|---------|
@@ -126,7 +126,7 @@ After submitting episode feedback, the system automatically summarizes your pref
 
 ## Background Music
 
-Place `.mp3` files in `music/`. Radio Craft will randomly pick one for each episode and apply:
+Place `.mp3` files in `music/`. Private AI Radio will randomly pick one for each episode and apply:
 
 - 8-second instrumental intro
 - Automatic ducking when speech is active

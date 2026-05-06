@@ -423,7 +423,7 @@ export default function StudioPage() {
       <section className="workspace">
         <header className="topbar">
           <div className="topbar-left">
-            <h1 className="site-title">Radio Craft</h1>
+            <h1 className="site-title">Private AI Radio</h1>
             <div className="frequency-line">
               <svg className="frequency-line-svg" width="92" height="18" viewBox="0 0 92 18" fill="none" aria-hidden="true">
                 <circle cx="3" cy="9" r="2.5" fill="#1F7A67" />
@@ -478,10 +478,10 @@ export default function StudioPage() {
             </div>
             <div className="action-buttons">
               <button className="btn-ghost" onClick={generateScriptOnly} disabled={loading || materials.length === 0}>
-                只写脚本
+                {loading && !progress ? "启动中..." : "只写脚本"}
               </button>
               <button className="btn-primary" onClick={generateFull} disabled={loading || materials.length === 0}>
-                {loading && progress ? progressText(progress.stage, progress.detail) : "一键生成"}
+                {loading ? (progress ? progressText(progress.stage, progress.detail) : "启动中...") : "一键生成"}
               </button>
             </div>
           </div>
@@ -494,9 +494,9 @@ export default function StudioPage() {
             onChangeS2={setVoiceS2}
           />
 
-          {loading && progress ? (
+          {loading ? (
             <div className="progress-bar">
-              <div className="progress-text">{progressText(progress.stage, progress.detail)}</div>
+              <div className="progress-text">{progress ? progressText(progress.stage, progress.detail) : "启动中..."}</div>
             </div>
           ) : null}
 

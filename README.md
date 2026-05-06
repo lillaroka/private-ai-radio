@@ -1,10 +1,10 @@
-# Radio Craft
+# Private AI Radio
 
 [English](README.en.md)
 
 AI 驱动的私人播客生成器。把你的阅读笔记、URL、话题想法，变成一段带背景音乐的双人电台节目。
 
-给它一个话题或贴一篇文章，Radio Craft 会：
+给它一个话题或贴一篇文章，Private AI Radio 会：
 
 1. **搜索** — 联网搜索补充素材（可选）
 2. **写稿** — 生成 7-10 分钟的双人对谈脚本
@@ -75,7 +75,7 @@ radio-craft/
 
 ## 语音自定义
 
-Radio Craft 内置 4 个语音选项：
+Private AI Radio 内置 4 个语音选项：
 
 - **Demo 1** / **Demo 2** — 附带的示例语音参考
 - **Anna** / **Diana** — SiliconFlow 公开预设语音
@@ -108,7 +108,7 @@ MOSS_REFERENCE_S2_TEXT=参考文本...
 
 ## Memory 系统
 
-Radio Craft 之所以能生成"像你"的节目，靠的是 `memory/` 里的几份文件。它们告诉 AI 你是谁、你关心什么、你想要什么样的聊天氛围。生成每一集脚本时，AI 都会读一遍。
+Private AI Radio 之所以能生成"像你"的节目，靠的是 `memory/` 里的几份文件。它们告诉 AI 你是谁、你关心什么、你想要什么样的聊天氛围。生成每一集脚本时，AI 都会读一遍。
 
 | 文件 | 作用 |
 |------|------|
@@ -123,7 +123,7 @@ Radio Craft 之所以能生成"像你"的节目，靠的是 `memory/` 里的几�
 
 ## 背景音乐
 
-把 `.mp3` 文件放到 `music/` 目录。Radio Craft 会随机选一首，自动处理：
+把 `.mp3` 文件放到 `music/` 目录。Private AI Radio 会随机选一首，自动处理：
 
 - 8 秒纯音乐前奏
 - 说话时自动压低 BGM（ducking）
