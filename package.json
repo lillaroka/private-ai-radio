@@ -1,0 +1,29 @@
+{
+  "name": "private-ai-radio",
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "description": "AI-powered personal podcast generator — turn your reading notes, URLs, and ideas into a two-host radio show with background music.",
+  "keywords": ["podcast", "ai", "tts", "radio", "personal", "audio"],
+  "engines": {
+    "node": ">=20.6.0"
+  },
+  "scripts": {
+    "dev": "vite build && node --env-file=.env.local server.mjs",
+    "build": "vite build",
+    "start": "node server.mjs",
+    "episode": "node --env-file=.env.local scripts/generate-episode.mjs",
+    "check": "node --check server.mjs && node --check lib/audio-utils.mjs && node --check lib/episode-pipeline.mjs && node --check scripts/generate-episode.mjs && node --check scripts/siliconflow-tts.mjs && vite build"
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.5.0",
+    "@vitejs/plugin-react": "^5.1.1",
+    "express": "^5.2.1",
+    "jsdom": "^25.0.1",
+    "mpg123-decoder": "^1.0.3",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-router": "^7.14.2",
+    "vite": "^7.3.0"
+  }
+}

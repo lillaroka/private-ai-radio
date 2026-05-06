@@ -1,0 +1,30 @@
+node_modules/
+dist/
+.env.local
+.env
+
+# User-generated episodes
+episodes/*
+!episodes/.gitkeep
+
+# User custom audio files (keep demo references)
+references/*.wav
+!references/demo1_vocals.wav
+!references/demo2_vocals.wav
+
+# User custom music (keep default bgm)
+*.mp3
+!music/bgm.mp3
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
+
+# Memory state files
+memory/.summary-state.json
+memory/feedback.jsonl
