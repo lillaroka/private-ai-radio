@@ -57,7 +57,7 @@ Agent 可从输出中提取 MP3 路径（匹配 `MP3:` 开头的行）。
 3. **.env.local** — 配置至少以下 API key：
    - `DEEPSEEK_API_KEY` — 脚本生成（必需）
    - `SILICONFLOW_API_KEY` — 语音合成（必需）
-   - `OPENROUTER_API_KEY` — 联网搜索（可选，缺失时自动跳过搜索）
+   - `OPENROUTER_API_KEY` — 联网搜索（可选。使用 `--search-results` 传入 agent 预搜索结果时完全不需要此 key）
 4. **content/voices.json** — 语音配置文件（首次使用：`cp content/voices.example.json content/voices.json`）
 5. **memory/** — 用户偏好目录（首次使用：`cp -r content/demo-memory memory`）
 
