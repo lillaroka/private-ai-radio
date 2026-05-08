@@ -29,6 +29,10 @@ cd radio-craft
 # Install dependencies
 npm install
 
+# Python dependencies (optional, for TTS noise detection)
+python3 -m venv .venv
+.venv/bin/pip install webrtcvad
+
 # Configure API keys
 cp .env.example .env.local
 # Edit .env.local with your API keys (at minimum, fill in the two required keys below)

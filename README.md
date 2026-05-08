@@ -27,6 +27,10 @@ cd radio-craft
 
 npm install
 
+# Python 依赖（可选，用于 TTS 杂音消除）
+python3 -m venv .venv
+.venv/bin/pip install webrtcvad
+
 # 配置 API 密钥
 cp .env.example .env.local
 # 编辑 .env.local，填入至少两个必填 key

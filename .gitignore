@@ -2,6 +2,7 @@ node_modules/
 dist/
 .env.local
 .env
+.venv/
 
 # User-generated episodes
 episodes/*
