@@ -147,12 +147,36 @@ Private AI Radio 之所以能生成"像你"的节目，靠的是 `memory/` 里�
 ## CLI 使用
 
 ```bash
-# 命令行生成一集节目
+# 话题模式
+npm run episode -- --topic "人工智能最新进展"
+
+# URL 文章
+npm run episode -- --url https://example.com/article
+
+# 本地文件
 npm run episode -- --input content/today.md
+
+# 直接文本
+npm run episode -- --text "今天读了费曼的自传..."
+
+# 跳过联网搜索
+npm run episode -- --topic "科技新闻" --skip-search
+
+# 测试模式（不调用 API，快速验证流程）
+npm run episode -- --mock
+
+# 指定语音
+npm run episode -- --topic "量子计算" --voices s1=demo1,s2=demo2
 
 # 测试不同语音预设的 TTS
 node --env-file=.env.local scripts/siliconflow-tts.mjs --preset moss
 ```
+
+CLI 生成的节目与 Web UI 共享存储，启动 Web 服务后可在页面上看到。
+
+### Agent 调用
+
+Private AI Radio 的 CLI 接口专为 AI agent（Claude Code、Codex 等）设计，支持通过命令行直接生成播客，无需启动 Web 服务器。详细的命令格式、参数说明和 agent 工作流示例见 [`AGENT_API.md`](AGENT_API.md)。
 
 ## 开发
 
