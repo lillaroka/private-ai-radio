@@ -16,7 +16,7 @@ try {
   const inputText = await resolveInput(args);
 
   if (!inputText?.trim()) {
-    console.error("Error: No input provided. Use one of: --topic, --url, --input, --text");
+    console.error("Error: No input provided. Use one of: --topic, --url, --input, --text, --search-results");
     process.exit(1);
   }
 
@@ -24,7 +24,7 @@ try {
 
   const cwd = __dirname;
   const mock = Boolean(args.mock);
-  const skipSearch = Boolean(args.skipSearch);
+  const skipSearch = Boolean(args.skipSearch) || Boolean(args["search-results"]);
 
   console.log("[episode] Generating script...");
 
@@ -88,13 +88,18 @@ async function resolveInput(args) {
     sources.push({ type: "text", content });
   }
   if (args.text) sources.push({ type: "text", content: args.text });
+  if (args["search-results"]) {
+    const filePath = path.resolve(args["search-results"]);
+    const content = await readFile(filePath, "utf8");
+    sources.push({ type: "search", content });
+  }
 
   if (sources.length === 0) return null;
 
   const parts = [];
   for (let i = 0; i < sources.length; i++) {
     const s = sources[i];
-    const typeLabels = { text: "文本笔记", url: "URL 文章", topic: "话题" };
+    const typeLabels = { text: "文本笔记", url: "URL 文章", topic: "话题", search: "搜索结果" };
     const label = typeLabels[s.type] ?? "素材";
     if (s.type === "url") {
       let content = s.content;
@@ -107,6 +112,8 @@ async function resolveInput(args) {
       parts.push(`=== 素材 ${i + 1}（${label}）===\n${content}`);
     } else if (s.type === "topic") {
       parts.push(`=== 素材 ${i + 1}（话题：${s.content}）===\n[话题，请搜索相关素材]`);
+    } else if (s.type === "search") {
+      parts.push(`=== 搜索结果 ===\n${s.content}`);
     } else {
       parts.push(`=== 素材 ${i + 1}（${label}）===\n${s.content}`);
     }

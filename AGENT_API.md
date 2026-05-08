@@ -12,7 +12,7 @@ npm run episode -- [options]
 
 `--` 是必需的，用于将后续参数传递给底层脚本，而不是被 npm 自身消费。
 
-## 输入参数（四选一，可组合）
+## 输入参数（可组合）
 
 | 参数 | 说明 | 示例 |
 |------|------|------|
@@ -20,6 +20,7 @@ npm run episode -- [options]
 | `--url <url>` | URL 文章，自动提取正文内容 | `--url https://example.com/article` |
 | `--input <path>` | 本地 Markdown/文本文件路径 | `--input content/today.md` |
 | `--text <string>` | 直接传入文本内容 | `--text "今天想聊一下..."` |
+| `--search-results <path>` | Agent 预先搜索的素材文件（提供时自动跳过联网搜索） | `--search-results ./search.md` |
 
 可以同时使用多个输入参数，它们会被合并为多段素材。
 
@@ -98,6 +99,16 @@ npm run episode -- --topic "测试" --mock
 npm run episode -- --topic "科技新闻" --voices s1=demo1,s2=demo2
 ```
 
+### Agent 本地搜索模式（省 OpenRouter 费用）
+
+Agent 自己完成联网搜索，把结果写入文件，再传给 CLI 跳过搜索环节：
+
+```bash
+# 1. Agent 将搜索结果保存到临时文件
+# 2. 传入 --search-results，自动跳过联网搜索
+npm run episode -- --topic "大模型推理能力" --search-results /tmp/search-results.md
+```
+
 ### 组合多种输入
 
 ```bash
@@ -126,12 +137,16 @@ curl -F "chat_id=<CHAT_ID>" \
 > 请帮我生成一期关于"大模型推理能力"的播客
 ```
 
-Claude Code 会执行：
+Claude Code 的典型流程：
+1. 用自带工具联网搜索相关素材
+2. 将搜索结果写入临时文件
+3. 执行生成命令：
 ```bash
-npm run episode -- --topic "大模型推理能力"
+npm run episode -- --topic "大模型推理能力" --search-results /tmp/search-results.md
 ```
+4. 从输出中解析出 MP3 路径，继续后续操作
 
-然后从输出中解析出 MP3 路径，继续后续操作。
+这样跳过了 OpenRouter 搜索环节，DeepSeek 只负责写稿，SiliconFlow 负责语音合成。
 
 ## 退出码
 

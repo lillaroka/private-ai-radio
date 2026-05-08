@@ -162,6 +162,9 @@ npm run episode -- --text "今天读了费曼的自传..."
 # 跳过联网搜索
 npm run episode -- --topic "科技新闻" --skip-search
 
+# Agent 预先搜索模式（省 OpenRouter 费用）
+npm run episode -- --topic "量子计算" --search-results /tmp/search.md
+
 # 测试模式（不调用 API，快速验证流程）
 npm run episode -- --mock
 
