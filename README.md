@@ -17,6 +17,7 @@ AI 驱动的私人播客生成器。把你的阅读笔记、URL、话题想法�
 
 - **Node.js** >= 20.6
 - **ffmpeg** — 音频编码依赖（`brew install ffmpeg` / `apt install ffmpeg` / `choco install ffmpeg`）
+- **Python 3** + `webrtcvad` — TTS 输出杂音检测（可选，缺失时自动跳过）
 
 ### 安装
 
@@ -29,6 +30,10 @@ npm install
 # 配置 API 密钥
 cp .env.example .env.local
 # 编辑 .env.local，填入至少两个必填 key
+
+# 初始化个人配置（语音 + 记忆模板）
+cp content/voices.example.json content/voices.json
+cp -r content/demo-memory memory
 
 npm run dev
 ```
@@ -55,12 +60,17 @@ radio-craft/
 │   ├── episode-pipeline.mjs # 完整的 生成→合成→混音 流水线
 │   ├── episode-store.mjs   # 节目持久化 + 反馈存储
 │   ├── memory.mjs          # 用户偏好加载
+│   ├── vad-detect.py       # WebRTC VAD 杂音检测（Python）
 │   └── load-local-env.mjs  # .env.local 加载器
 ├── src/                    # React 前端（Vite）
 │   ├── pages/              # StudioPage（主页）+ EpisodePage（播放页）
 │   ├── components/         # VoiceSelectors、ScriptEditor、HistorySidebar
 │   └── hooks/              # useSSE（Server-Sent Events）
-├── memory/                 # 用户偏好模板（编辑这些文件！）
+├── memory/                 # 用户偏好（gitignored，首次需从 content/demo-memory 复制）
+├── content/
+│   ├── voices.example.json # 语音配置模板（tracked）
+│   ├── voices.json         # 个人语音配置（gitignored）
+│   └── demo-memory/        # 记忆模板（tracked）
 ├── scripts/                # CLI 工具
 └── music/                  # 背景音乐（放 .mp3 文件进来）
 ```
@@ -71,26 +81,29 @@ radio-craft/
 2. **搜索** — 通过 OpenRouter 联网搜索补充来源（可在界面关闭）
 3. **脚本** — DeepSeek 生成多段落 `[S1]`/`[S2]` 对话脚本
 4. **语音** — SiliconFlow MOSS-TTSD 用双声线参考音频合成各段落
-5. **混音** — 音频响度归一化，混入 BGM（8 秒前奏 + ducking + 10 秒尾奏）
+5. **杂音消除** — WebRTC VAD 检测并裁剪 TTS 输出前导杂音（可选）
+6. **混音** — 音频响度归一化，混入 BGM（8 秒前奏 + ducking + 10 秒尾奏）
 
 ## 语音自定义
 
-Private AI Radio 内置 4 个语音选项：
+Private AI Radio 默认提供 demo 语音选项（Anna/Diana）。语音配置通过 `content/voices.json` 管理：
 
-- **Demo 1** / **Demo 2** — 附带的示例语音参考
-- **Anna** / **Diana** — SiliconFlow 公开预设语音
+1. 首次使用：`cp content/voices.example.json content/voices.json`
+2. 编辑 `content/voices.json`，添加你自己的语音
 
 ### 用你自己的声音
 
 1. 录制 15-30 秒干净的人声（WAV，44100 Hz，无背景音）
 2. 保存到 `references/your_voice.wav`
-3. 在 `lib/tts.mjs` 中添加条目：
+3. 在 `content/voices.json` 中添加条目：
 
-```js
-const VOICE_OPTIONS = {
-  myvoice: { label: "我的声音", audio: "local:references/your_voice.wav", text: "音频中说的那段话的精确文字..." },
-  // ...已有选项
-};
+```json
+{
+  "voices": {
+    "myvoice": { "label": "我的声音", "audio": "local:references/your_voice.wav", "text": "音频中说的那段话的精确文字..." },
+    "demo1": { "label": "Demo 1", "audio": "local:references/demo1_vocals.wav", "text": "..." }
+  }
+}
 ```
 
 详见 [`references/README.md`](references/README.md)。
@@ -109,6 +122,8 @@ MOSS_REFERENCE_S2_TEXT=参考文本...
 ## Memory 系统
 
 Private AI Radio 之所以能生成"像你"的节目，靠的是 `memory/` 里的几份文件。它们告诉 AI 你是谁、你关心什么、你想要什么样的聊天氛围。生成每一集脚本时，AI 都会读一遍。
+
+首次使用需复制模板：`cp -r content/demo-memory memory`
 
 | 文件 | 作用 |
 |------|------|

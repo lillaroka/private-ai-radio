@@ -45,8 +45,8 @@ app.get("/api/episodes/:id/download/:file", async (request, response) => {
   response.download(filePath, filename);
 });
 
-app.get("/api/voices", (_request, response) => {
-  response.json({ voices: getVoiceOptions() });
+app.get("/api/voices", async (_request, response) => {
+  response.json({ voices: await getVoiceOptions() });
 });
 
 app.get("/api/materials", async (_request, response) => {

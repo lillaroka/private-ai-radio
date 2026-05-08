@@ -17,6 +17,7 @@ Give it a topic or paste an article, and Private AI Radio will:
 
 - **Node.js** >= 20.6
 - **ffmpeg** — required for audio encoding (`brew install ffmpeg` / `apt install ffmpeg` / `choco install ffmpeg`)
+- **Python 3** + `webrtcvad` — TTS output noise detection (optional, gracefully skipped if missing)
 
 ### Setup
 
@@ -31,6 +32,10 @@ npm install
 # Configure API keys
 cp .env.example .env.local
 # Edit .env.local with your API keys (at minimum, fill in the two required keys below)
+
+# Initialize personal config (voice + memory templates)
+cp content/voices.example.json content/voices.json
+cp -r content/demo-memory memory
 
 # Start the app
 npm run dev
@@ -58,12 +63,17 @@ radio-craft/
 │   ├── episode-pipeline.mjs # Orchestrates the full generate → speak → mix pipeline
 │   ├── episode-store.mjs   # Episode persistence + feedback
 │   ├── memory.mjs          # User preference loading
+│   ├── vad-detect.py       # WebRTC VAD noise detection (Python)
 │   └── load-local-env.mjs  # .env.local loader
 ├── src/                    # React frontend (Vite)
 │   ├── pages/              # StudioPage (main) + EpisodePage (playback)
 │   ├── components/         # VoiceSelectors, ScriptEditor, HistorySidebar
 │   └── hooks/              # useSSE (Server-Sent Events)
-├── memory/                 # User preference templates (edit these!)
+├── memory/                 # User preferences (gitignored, copy from content/demo-memory on first use)
+├── content/
+│   ├── voices.example.json # Voice config template (tracked)
+│   ├── voices.json         # Personal voice config (gitignored)
+│   └── demo-memory/        # Memory templates (tracked)
 ├── scripts/                # CLI tools
 └── music/                  # Background music (place your .mp3 here)
 ```
@@ -74,26 +84,29 @@ radio-craft/
 2. **Research** — OpenRouter web search finds supplementary sources (can be disabled)
 3. **Script** — DeepSeek generates a multi-segment `[S1]`/`[S2]` dialogue script
 4. **TTS** — SiliconFlow MOSS-TTSD synthesizes each segment with dual voice references
-5. **Mix** — Audio is normalized, mixed with BGM (intro/outro + ducking), and combined
+5. **Noise Gate** — WebRTC VAD detects and trims leading noise from TTS output (optional)
+6. **Mix** — Audio is normalized, mixed with BGM (intro/outro + ducking), and combined
 
 ## Voice Customization
 
-Private AI Radio ships with 4 built-in voice options:
+Private AI Radio ships with demo voice options (Anna/Diana) by default. Voice configuration is managed via `content/voices.json`:
 
-- **Demo 1** / **Demo 2** — Included sample voice references
-- **Anna** / **Diana** — Public preset voices from SiliconFlow
+1. First-time setup: `cp content/voices.example.json content/voices.json`
+2. Edit `content/voices.json` to add your own voices
 
 ### Adding Your Own Voice
 
 1. Record 15-30 seconds of clean, vocals-only audio (WAV, 44100 Hz)
 2. Save it to `references/your_voice.wav`
-3. Add an entry in `lib/tts.mjs`:
+3. Add an entry in `content/voices.json`:
 
-```js
-const VOICE_OPTIONS = {
-  myvoice: { label: "My Voice", audio: "local:references/your_voice.wav", text: "Exact transcript of what is spoken in the audio..." },
-  // ...existing options
-};
+```json
+{
+  "voices": {
+    "myvoice": { "label": "My Voice", "audio": "local:references/your_voice.wav", "text": "Exact transcript of what is spoken in the audio..." },
+    "demo1": { "label": "Demo 1", "audio": "local:references/demo1_vocals.wav", "text": "..." }
+  }
+}
 ```
 
 See [`references/README.md`](references/README.md) for detailed instructions.
@@ -112,6 +125,8 @@ MOSS_REFERENCE_S2_TEXT=Reference transcript...
 ## Memory System
 
 What makes Private AI Radio generate episodes that feel like *yours* is the `memory/` directory. These files tell the AI who you are, what you care about, and what kind of conversation you want to hear. The AI reads them before generating every script.
+
+First-time setup: `cp -r content/demo-memory memory`
 
 | File | Purpose |
 |------|---------|

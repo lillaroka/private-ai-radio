@@ -128,7 +128,12 @@ export default function StudioPage() {
     try {
       const response = await fetch("/api/voices");
       const data = await response.json();
-      setVoiceOptions(data.voices ?? []);
+      const voices = data.voices ?? [];
+      setVoiceOptions(voices);
+      if (voices.length >= 2) {
+        setVoiceS1(voices[0].id);
+        setVoiceS2(voices[1].id);
+      }
     } catch {
       // Ignore
     }

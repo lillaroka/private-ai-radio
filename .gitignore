@@ -12,9 +12,9 @@ references/*.wav
 !references/demo1_vocals.wav
 !references/demo2_vocals.wav
 
-# User custom music (keep default bgm)
+# User custom music (keep demo bgm)
 *.mp3
-!music/bgm.mp3
+!music/demo.mp3
 
 # OS files
 .DS_Store
@@ -25,6 +25,11 @@ Thumbs.db
 *.swo
 *~
 
-# Memory state files
-memory/.summary-state.json
-memory/feedback.jsonl
+# Memory state files (entire directory is user-specific)
+memory/
+
+# Personal voice configuration
+content/voices.json
+
+# Personal materials (runtime data)
+content/materials.json
