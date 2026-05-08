@@ -8,7 +8,8 @@ import { generateScript, generateAudio, fetchAndExtractArticle } from "../lib/ep
 import { getVoiceOptions } from "../lib/tts.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-loadLocalEnv(__dirname);
+const projectRoot = path.resolve(__dirname, "..");
+loadLocalEnv(projectRoot);
 
 const args = parseArgs(process.argv.slice(2));
 
@@ -22,7 +23,7 @@ try {
 
   const voices = await resolveVoices(args.voices);
 
-  const cwd = __dirname;
+  const cwd = projectRoot;
   const mock = Boolean(args.mock);
   const skipSearch = Boolean(args.skipSearch) || Boolean(args["search-results"]);
 
