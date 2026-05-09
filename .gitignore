@@ -25,6 +25,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
+.vscode/
 
 # Memory state files (entire directory is user-specific)
 memory/
