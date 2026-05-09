@@ -11,6 +11,24 @@ Give it a topic or paste an article, and Private AI Radio will:
 3. **Speak** — synthesize speech with dual voice cloning via SiliconFlow
 4. **Mix** — blend in background music with automatic ducking
 
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="screenshots/home-page.png" alt="Studio Page" width="400" /></td>
+    <td><img src="screenshots/episode.png" alt="Episode Player" width="400" /></td>
+  </tr>
+  <tr>
+    <td align="center">Studio Page</td>
+    <td align="center">Episode Player</td>
+  </tr>
+</table>
+
+<p align="center">
+  <img src="screenshots/mobile-home.png" alt="Mobile" width="200" />
+</p>
+<p align="center">Mobile View</p>
+
 ## Quick Start
 
 ### Prerequisites

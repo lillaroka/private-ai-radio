@@ -11,6 +11,24 @@ AI 驱动的私人播客生成器。把你的阅读笔记、URL、话题想法�
 3. **合成** — 用 SiliconFlow 双声线语音克隆合成语音
 4. **混音** — 自动混入背景音乐，带 ducking 和淡入淡出
 
+## 截图
+
+<table>
+  <tr>
+    <td><img src="screenshots/home-page.png" alt="Studio 主页" width="400" /></td>
+    <td><img src="screenshots/episode.png" alt="节目播放页" width="400" /></td>
+  </tr>
+  <tr>
+    <td align="center">Studio 主页</td>
+    <td align="center">节目播放页</td>
+  </tr>
+</table>
+
+<p align="center">
+  <img src="screenshots/mobile-home.png" alt="移动端" width="200" />
+</p>
+<p align="center">移动端适配</p>
+
 ## 快速开始
 
 ### 环境要求
